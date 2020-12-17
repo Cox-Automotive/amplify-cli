@@ -20,7 +20,10 @@ async function run(context) {
   if (!context.exeInfo || context.exeInfo.isNewEnv) {
     context.exeInfo = context.exeInfo || {};
     const { projectName } = context.exeInfo.projectConfig;
-    const initTemplateFilePath = path.join(__dirname, '..', 'resources', 'rootStackTemplate.json');
+    let initTemplateFilePath = path.join(__dirname, '..', 'resources', 'rootStackTemplate.json');
+    if (process.env.AMPLIFY_DONT_CREATE_IAM !== 'undefined') {
+        initTemplateFilePath = path.join(__dirname, '..', 'resources', 'rootStackTemplateNoIAM.json');
+    }
     let timeStamp = `${moment().format('Hmmss')}`;
     if (process.env.AMPLIFY_TIMESTAMP_HASH !== 'undefined') {
         timeStamp = process.env.AMPLIFY_TIMESTAMP_HASH;
