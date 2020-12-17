@@ -21,7 +21,10 @@ async function run(context) {
     context.exeInfo = context.exeInfo || {};
     const { projectName } = context.exeInfo.projectConfig;
     const initTemplateFilePath = path.join(__dirname, '..', 'resources', 'rootStackTemplate.json');
-    const timeStamp = `${moment().format('Hmmss')}`;
+    let timeStamp = `${moment().format('Hmmss')}`;
+    if (process.env.AMPLIFY_TIMESTAMP_HASH !== 'undefined') {
+        timeStamp = process.env.AMPLIFY_TIMESTAMP_HASH;
+    }
     const { envName = '' } = context.exeInfo.localEnvInfo;
     let stackName = normalizeStackName(`amplify-${projectName}-${envName}-${timeStamp}`);
     const awsConfig = await configurationManager.getAwsConfig(context);
